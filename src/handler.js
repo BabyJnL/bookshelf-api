@@ -25,6 +25,7 @@ class Book {
         }
 
         books.push(book);
+        
         return apiResponse(h, {status: 'success', message: 'Buku berhasil ditambahkan', data: {bookId: book.id}}, 201);
     }
 
@@ -53,7 +54,7 @@ class Book {
         return apiResponse(h, {status: 'success', data: {book: books[idx]}});
     }
 
-    // Static method for updating an existing book
+    // Static method for updating an existing book by book id
     static update (req, h) {
         // Destructuring request payload
         const { name, pageCount, readPage } = req.payload;
@@ -78,6 +79,20 @@ class Book {
         Object.assign(books[idx], newData);
 
         return apiResponse(h, {status: 'success', message: 'Buku berhasil diperbarui'});
+    }
+
+    // Static method for deleting book by book id
+    static remove (req, h) {
+        const { bookId } = req.params;
+
+        const idx = books.findIndex(book => book.id === bookId);
+
+        if (idx === -1)
+            return apiResponse(h, {status: 'fail', message: 'Buku gagal dihapus. Id tidak ditemukan'}, 404);
+
+        books.splice(idx, 1);
+        
+        return apiResponse(h, {status: 'success', message: 'Buku berhasil dihapus'});
     }
 }
 
