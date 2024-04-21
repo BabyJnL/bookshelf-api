@@ -2,6 +2,7 @@ const { nanoid } = require('nanoid');
 const { books } = require('./books.js');
 
 const apiResponse = (responseToolkit, payload, statusCode = 200) => responseToolkit.response(payload).code(statusCode);
+const getIndexById = (bookId) => books.findIndex(book => book.id === bookId);
 
 class Book {
     // Static method for register a new book
@@ -25,7 +26,7 @@ class Book {
         }
 
         books.push(book);
-        
+
         return apiResponse(h, {status: 'success', message: 'Buku berhasil ditambahkan', data: {bookId: book.id}}, 201);
     }
 
@@ -46,7 +47,7 @@ class Book {
     static getById (req, h) {
         const { bookId } = req.params;
 
-        const idx = books.findIndex(book => book.id === bookId);
+        const idx = getIndexById(bookId);
         
         if (idx === -1) 
             return apiResponse(h, {status: 'fail', message: 'Buku tidak ditemukan'}, 404);
@@ -66,7 +67,7 @@ class Book {
             return apiResponse(h, {status: 'fail', message: 'Gagal menambahkan buku. readPage tidak boleh lebih besar dari pageCount'}, 400);
 
         const { bookId } = req.params;
-        const idx = books.findIndex(book => book.id === bookId);
+        const idx =getIndexById(bookId);
 
         if (idx === -1)
             return apiResponse(h, {status: 'fail', message: 'Gagal memperbarui buku. Id tidak ditemukan'}, 404);
@@ -85,7 +86,7 @@ class Book {
     static remove (req, h) {
         const { bookId } = req.params;
 
-        const idx = books.findIndex(book => book.id === bookId);
+        const idx = getIndexById(bookId);
 
         if (idx === -1)
             return apiResponse(h, {status: 'fail', message: 'Buku gagal dihapus. Id tidak ditemukan'}, 404);
