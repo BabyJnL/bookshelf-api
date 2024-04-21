@@ -95,10 +95,10 @@ class Book {
         const { name, pageCount, readPage } = req.payload;
 
         if (!name) 
-            return apiResponse(h, {status: 'fail', message: 'Gagal menambahkan buku. Mohon isi nama buku'}, 400);
+            return apiResponse(h, {status: 'fail', message: 'Gagal memperbarui buku. Mohon isi nama buku'}, 400);
 
         if (readPage > pageCount) 
-            return apiResponse(h, {status: 'fail', message: 'Gagal menambahkan buku. readPage tidak boleh lebih besar dari pageCount'}, 400);
+            return apiResponse(h, {status: 'fail', message: 'Gagal memperbarui buku. readPage tidak boleh lebih besar dari pageCount'}, 400);
 
         const { bookId } = req.params;
         const idx = getIndexById(bookId);
