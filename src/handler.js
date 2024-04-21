@@ -31,8 +31,42 @@ class Book {
     }
 
     // Static method for get all of books
-    static getAll (_, h) {
+    static getAll (req, h) {
+        let { name, reading, finished } = req.query;
+
         const returnedBooks = [];
+
+        if (name) {
+            const loweredCaseBookName = name.toLowerCase();
+
+            books.filter(book => {
+                if (book.name.toLowerCase().includes(loweredCaseBookName)) {
+                    returnedBooks.push({id: book.id, name: book.name, publisher: book.publisher});
+                }
+            });
+
+            return apiResponse(h, {status: 'success', data: {books: returnedBooks}});
+        }
+
+        if (reading) {
+            books.filter(book => {
+                if (book.reading == reading) {
+                    returnedBooks.push({id: book.id, name: book.name, publisher: book.publisher});
+                }
+            });
+
+            return apiResponse(h, {status: 'success', data: {books: returnedBooks}});
+        }
+
+        if (finished) {
+            books.filter(book => {
+                if (book.finished == finished) {
+                    returnedBooks.push({id: book.id, name: book.name, publisher: book.publisher});
+                }
+            });
+
+            return apiResponse(h, {status: 'success', data: {books: returnedBooks}});
+        }
 
         if (books.length > 0) {
             books.forEach(book => {
