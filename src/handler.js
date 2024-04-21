@@ -101,7 +101,7 @@ class Book {
             return apiResponse(h, {status: 'fail', message: 'Gagal menambahkan buku. readPage tidak boleh lebih besar dari pageCount'}, 400);
 
         const { bookId } = req.params;
-        const idx =getIndexById(bookId);
+        const idx = getIndexById(bookId);
 
         if (idx === -1)
             return apiResponse(h, {status: 'fail', message: 'Gagal memperbarui buku. Id tidak ditemukan'}, 404);
@@ -110,6 +110,8 @@ class Book {
         for (let key in req.payload) {
             newData[key] = req.payload[key];
         }
+
+        newData.updatedAt = new Date().toISOString();
 
         Object.assign(books[idx], newData);
 
