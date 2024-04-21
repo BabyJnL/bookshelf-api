@@ -52,6 +52,33 @@ class Book {
 
         return apiResponse(h, {status: 'success', data: {book: books[idx]}});
     }
+
+    // Static method for updating an existing book
+    static update (req, h) {
+        // Destructuring request payload
+        const { name, pageCount, readPage } = req.payload;
+
+        if (!name) 
+            return apiResponse(h, {status: 'fail', message: 'Gagal menambahkan buku. Mohon isi nama buku'}, 400);
+
+        if (readPage > pageCount) 
+            return apiResponse(h, {status: 'fail', message: 'Gagal menambahkan buku. readPage tidak boleh lebih besar dari pageCount'}, 400);
+
+        const { bookId } = req.params;
+        const idx = books.findIndex(book => book.id === bookId);
+
+        if (idx === -1)
+            return apiResponse(h, {status: 'fail', message: 'Gagal memperbarui buku. Id tidak ditemukan'}, 404);
+
+        const newData = {};
+        for (let key in req.payload) {
+            newData[key] = req.payload[key];
+        }
+
+        Object.assign(books[idx], newData);
+
+        return apiResponse(h, {status: 'success', message: 'Buku berhasil diperbarui'});
+    }
 }
 
 module.exports = Book;
