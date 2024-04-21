@@ -28,9 +28,17 @@ class Book {
         return apiResponse(h, {status: 'success', message: 'Buku berhasil ditambahkan', data: {bookId: book.id}}, 201);
     }
 
-    // Static method for displaying all of books
+    // Static method for get all of books
     static getAll (_, h) {
-        return apiResponse(h, {status: 'success', data: {books: books}});
+        const returnedBooks = [];
+
+        if (books.length > 0) {
+            books.forEach(book => {
+                returnedBooks.push({id: book.id, name: book.name, publisher: book.publisher});
+            });
+        }
+
+        return apiResponse(h, {status: 'success', data: {books: returnedBooks}});
     }
 }
 
