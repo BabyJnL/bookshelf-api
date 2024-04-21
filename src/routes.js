@@ -1,17 +1,16 @@
+// Import handler
+const Book = require('./handler.js');
+
 const routes = [
     {
         method: 'POST',
         path: '/books',
-        handler: (req, h) => {
-            
-        }
+        handler: Book.add
     },
     {
         method: 'GET',
         path: '/books',
-        handler: (req, h) => {
-
-        }
+        handler: Book.getAll
     },
     {
         method: 'GET',
