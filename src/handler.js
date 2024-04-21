@@ -40,6 +40,18 @@ class Book {
 
         return apiResponse(h, {status: 'success', data: {books: returnedBooks}});
     }
+
+    // Static method for get book by book id
+    static getById (req, h) {
+        const { bookId } = req.params;
+
+        const idx = books.findIndex(book => book.id === bookId);
+        
+        if (idx === -1) 
+            return apiResponse(h, {status: 'fail', message: 'Buku tidak ditemukan'}, 404);
+
+        return apiResponse(h, {status: 'success', data: {book: books[idx]}});
+    }
 }
 
 module.exports = Book;
